@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f8f5ed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Português">
+<title>Meu Português</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f8f5ed;
+  color: #24372e;
+}
+.app { max-width: 440px; margin: auto; padding: 32px 22px 60px; }
+.eyebrow { font-size: 12px; font-weight: 750; letter-spacing: 2px; color: #738476; }
+h1 { font-size: 37px; letter-spacing: -1.5px; margin: 10px 0; }
+.subtitle { color: #718075; margin: 0 0 25px; }
+.card {
+  background: white; border-radius: 24px;
+  padding: 23px; margin: 16px 0;
+  box-shadow: 0 5px 25px #24372e0a;
+}
+.streak { display: flex; justify-content: space-between; align-items: center; }
+.streak strong { font-size: 30px; }
+.small { color: #718075; font-size: 13px; }
+h2 { font-size: 19px; margin: 0 0 20px; }
+.task {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 0; font-size: 15px;
+}
+.task + .task { border-top: 1px solid #edf0e9; }
+input[type="checkbox"] { width: 23px; height: 23px; accent-color: #387a59; }
+.timer {
+  font-size: 65px; font-weight: 750; text-align: center;
+  letter-spacing: -3px; margin: 20px 0 6px;
+  font-variant-numeric: tabular-nums;
+}
+.progress { height: 9px; background: #e8ede7; border-radius: 20px; overflow: hidden; }
+.fill { height: 100%; width: 0%; background: #438e68; transition: width .3s; }
+button {
+  width: 100%; border: 0; border-radius: 16px;
+  padding: 18px; font-size: 16px; font-weight: 700;
+  background: #327653; color: white; margin-top: 18px; cursor: pointer;
+}
+button:disabled { opacity: .4; cursor: not-allowed; }
+.secondary { background: #edf3ed; color: #327653; margin-top: 10px; }
+.center { text-align: center; }
+.week { display: grid; grid-template-columns: repeat(7,1fr); gap: 7px; }
+.day { text-align: center; font-size: 12px; color: #718075; }
+.dot { height: 36px; border-radius: 12px; background: #edf0e9; display: grid; place-items: center; margin-top: 8px; }
+.dot.done { background: #d9eee0; color: #247048; }
+.success { color: #327653; font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="eyebrow">A LITTLE EVERY DAY 🇧🇷</div>
+  <h1>Meu Português</h1>
+  <p class="subtitle">Five minutes today. A little better tomorrow.</p>
+
+  <section class="card streak">
+    <div><div class="small">CURRENT STREAK</div><strong id="streak">0 days</strong></div>
+    <div style="font-size:42px">🔥</div>
+  </section>
+
+  <section class="card">
+    <h2>Today's little steps</h2>
+    <label class="task"><input type="checkbox" id="notes"> Open your Portuguese notes</label>
+    <label class="task"><input type="checkbox" id="studied" disabled> Study for at least 5 minutes</label>
+  </section>
+
+  <section class="card">
+    <div class="small center">YOUR DAILY PRACTICE</div>
+    <div class="timer" id="clock">00:00</div>
+    <div class="progress"><div class="fill" id="fill"></div></div>
+    <p class="small center" id="message">Just 5 minutes. You can do this!</p>
+    <button id="start" disabled>Start studying</button>
+    <button class="secondary" id="reset">Reset timer</button>
+  </section>
+
+  <section class="card">
+    <h2>Your last 7 days</h2>
+    <div class="week" id="week"></div>
+    <p class="small">🛡️ One missed day won't break your streak.</p>
+  </section>
+  <p class="small center">Devagar se vai ao longe. 💚</p>
+</main>
+
+<script>
+const KEY = "portugueseHabitV1";
+const goal = 300;
+const pad = n => String(n).padStart(2,"0");
+const dateKey = d =>
+  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const dayBefore = (key, days) => {
+  const [y,m,d] = key.split("-").map(Number);
+  const dt = new Date(y,m-1,d-days,12);
+  return dateKey(dt);
+};
+const today = () => dateKey(new Date());
+let data;
+try { data = JSON.parse(localStorage.getItem(KEY)) || {}; }
+catch { data = {}; }
+data.history ||= {};
+data.sessions ||= {};
+let running = false, started = 0, interval = null;
+let elapsed = data.sessions[today()] || 0;
+const $ = id => document.getElementById(id);
+const save = () => localStorage.setItem(KEY, JSON.stringify(data));
+
+function streak() {
+  let cursor = data.history[today()] ? today() : dayBefore(today(),1);
+  let count = 0, grace = 1;
+  // A single missed day is forgiven between completed days.
+  for (let i=0;i<3660;i++) {
+    if(data.history[cursor]) count++;
+    else if(count > 0 && grace > 0) grace--;
+    else break;
+    cursor = dayBefore(cursor,1);
+  }
+  return count;
+}
+
+function render() {
+  const done = !!data.history[today()];
+  $("notes").checked = !!data.notesDate && data.notesDate === today();
+  $("studied").checked = done;
+  $("streak").textContent = streak() + (streak()===1?" day":" days");
+  const total = elapsed + (running ? Math.floor((Date.now()-started)/1000) : 0);
+  $("clock").textContent = `${pad(Math.floor(total/60))}:${pad(total%60)}`;
+  $("fill").style.width = Math.min(100,total/goal*100)+"%";
+  $("start").disabled = done || !$("notes").checked;
+  $("start").textContent = running ? "Pause practice" : "Start studying";
+  $("message").textContent = done ? "Parabéns! You did it! 🎉" :
+    total >= goal ? "Goal reached!" : "Every minute counts. 💚";
+  $("week").innerHTML = "";
+  for(let i=6;i>=0;i--) {
+    const day = dayBefore(today(),i);
+    const dt = new Date(day+"T12:00:00");
+    const label = dt.toLocaleDateString("en-US",{weekday:"short"}).slice(0,1);
+    const el = document.createElement("div");
+    el.className="day";
+    el.innerHTML=`${label}<div class="dot ${data.history[day]?"done":""}">${data.history[day]?"✓":"·"}</div>`;
+    $("week").appendChild(el);
+  }
+}
+
+function pause() {
+  if (!running) return;
+  elapsed += Math.floor((Date.now()-started)/1000);
+  running = false;
+  clearInterval(interval);
+  data.sessions[today()] = elapsed;
+  save();
+}
+function tick() {
+  if (today() !== activeDay) {
+    pause(); elapsed = data.sessions[today()] || 0;
+    activeDay = today();
+  }
+  const total = elapsed + (running ? Math.floor((Date.now()-started)/1000) : 0);
+  if (running && total >= goal) {
+    pause();
+    elapsed = Math.max(elapsed,goal);
+    data.history[today()] = true;
+    data.sessions[today()] = elapsed;
+    save();
+  }
+  render();
+}
+let activeDay = today();
+$("notes").addEventListener("change", e => {
+  if(!e.target.checked) pause();
+  data.notesDate = e.target.checked ? today() : null;
+  save(); render();
+});
+$("start").addEventListener("click", () => {
+  if(running) pause();
+  else {
+    started = Date.now();
+    running = true;
+    interval = setInterval(tick,250);
+  }
+  render();
+});
+$("reset").addEventListener("click", () => {
+  pause();
+  if(data.history[today()]) return;
+  elapsed = 0;
+  data.sessions[today()] = 0;
+  save(); render();
+});
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden) pause();
+});
+render();
+</script>
+</body>
+</html>
