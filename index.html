@@ -1,204 +1,92 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f8f5ed">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Português">
-<title>Meu Português</title>
-<style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #f8f5ed;
-  color: #24372e;
-}
-.app { max-width: 440px; margin: auto; padding: 32px 22px 60px; }
-.eyebrow { font-size: 12px; font-weight: 750; letter-spacing: 2px; color: #738476; }
-h1 { font-size: 37px; letter-spacing: -1.5px; margin: 10px 0; }
-.subtitle { color: #718075; margin: 0 0 25px; }
-.card {
-  background: white; border-radius: 24px;
-  padding: 23px; margin: 16px 0;
-  box-shadow: 0 5px 25px #24372e0a;
-}
-.streak { display: flex; justify-content: space-between; align-items: center; }
-.streak strong { font-size: 30px; }
-.small { color: #718075; font-size: 13px; }
-h2 { font-size: 19px; margin: 0 0 20px; }
-.task {
-  display: flex; align-items: center; gap: 12px;
-  padding: 15px 0; font-size: 15px;
-}
-.task + .task { border-top: 1px solid #edf0e9; }
-input[type="checkbox"] { width: 23px; height: 23px; accent-color: #387a59; }
-.timer {
-  font-size: 65px; font-weight: 750; text-align: center;
-  letter-spacing: -3px; margin: 20px 0 6px;
-  font-variant-numeric: tabular-nums;
-}
-.progress { height: 9px; background: #e8ede7; border-radius: 20px; overflow: hidden; }
-.fill { height: 100%; width: 0%; background: #438e68; transition: width .3s; }
-button {
-  width: 100%; border: 0; border-radius: 16px;
-  padding: 18px; font-size: 16px; font-weight: 700;
-  background: #327653; color: white; margin-top: 18px; cursor: pointer;
-}
-button:disabled { opacity: .4; cursor: not-allowed; }
-.secondary { background: #edf3ed; color: #327653; margin-top: 10px; }
-.center { text-align: center; }
-.week { display: grid; grid-template-columns: repeat(7,1fr); gap: 7px; }
-.day { text-align: center; font-size: 12px; color: #718075; }
-.dot { height: 36px; border-radius: 12px; background: #edf0e9; display: grid; place-items: center; margin-top: 8px; }
-.dot.done { background: #d9eee0; color: #247048; }
-.success { color: #327653; font-weight: 700; }
-</style>
-</head>
-<body>
-<main class="app">
-  <div class="eyebrow">A LITTLE EVERY DAY 🇧🇷</div>
-  <h1>Meu Português</h1>
-  <p class="subtitle">Five minutes today. A little better tomorrow.</p>
-
-  <section class="card streak">
-    <div><div class="small">CURRENT STREAK</div><strong id="streak">0 days</strong></div>
-    <div style="font-size:42px">🔥</div>
-  </section>
-
-  <section class="card">
-    <h2>Today's little steps</h2>
-    <label class="task"><input type="checkbox" id="notes"> Open your Portuguese notes</label>
-    <label class="task"><input type="checkbox" id="studied" disabled> Study for at least 5 minutes</label>
-  </section>
-
-  <section class="card">
-    <div class="small center">YOUR DAILY PRACTICE</div>
-    <div class="timer" id="clock">00:00</div>
-    <div class="progress"><div class="fill" id="fill"></div></div>
-    <p class="small center" id="message">Just 5 minutes. You can do this!</p>
-    <button id="start" disabled>Start studying</button>
-    <button class="secondary" id="reset">Reset timer</button>
-  </section>
-
-  <section class="card">
-    <h2>Your last 7 days</h2>
-    <div class="week" id="week"></div>
-    <p class="small">🛡️ One missed day won't break your streak.</p>
-  </section>
-  <p class="small center">Devagar se vai ao longe. 💚</p>
-</main>
-
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f7f5ef"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Meu Português"><title>Meu Português • 5 minutes a day</title><style>
+:root{--green:#276b50;--ink:#263c31;--muted:#7c8b80;--cream:#f7f5ef;--gold:#e8b94d;--red:#c95b46}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #e4b44b;outline-offset:3px}.app{max-width:490px;margin:auto;padding:30px 19px 75px}.eyebrow{font-size:11px;letter-spacing:2px;color:#6d8675;font-weight:800}.love-heading{font-size:clamp(25px,7vw,34px);line-height:1.15;max-width:330px}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}h1{font-size:36px;letter-spacing:-1.4px;margin:8px 0 5px}h2{font-size:19px;letter-spacing:-.4px;margin:0 0 13px}p{line-height:1.45}.sub{color:var(--muted);margin:0 0 16px}.card{background:#fff;border:1px solid #e9eee7;border-radius:23px;padding:21px;margin:14px 0;box-shadow:0 8px 24px #2d50300a}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{background:#eef5ed;padding:13px 9px;border-radius:15px;text-align:center}.stat strong{font-size:24px;display:block;letter-spacing:-1px}.stat small{font-size:11px;color:#607768}.pill{border-radius:30px;background:#f8ecd0;padding:8px 11px;color:#8c6220;font-size:12px;font-weight:800;white-space:nowrap}.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid #f0f2ef}.task:last-child{border:0}.task input{appearance:none;-webkit-appearance:none;width:23px;height:23px;flex-shrink:0;margin:0;border:2px solid #b5c7b9;border-radius:6px;background:#fff;position:relative;cursor:pointer;transition:background .18s,border-color .18s}.task input:checked{background:var(--green);border-color:var(--green)}.task input:checked::after{content:"";position:absolute;left:6px;top:1px;width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}.task input:disabled{opacity:1;cursor:default}.task input:disabled:not(:checked){background:#f5f7f4;border-color:#cbd5cd}
+.task span{flex:1}.small{font-size:12px;color:var(--muted)}.timer{font-size:63px;font-weight:800;letter-spacing:-3px;text-align:center;font-variant-numeric:tabular-nums;margin:8px 0 4px}.timer.fire{color:#c95738}.track{height:14px;background:#e8eee7;border-radius:20px;position:relative;margin:15px 0;overflow:visible}.fill{height:100%;border-radius:20px;width:0%;background:#2e9165;transition:width .3s,background-position .3s}.flame{position:absolute;top:-15px;transform:translateX(-50%);font-size:23px;display:none;filter:drop-shadow(0 2px 3px #d45c3670)}.flame.show{display:block;animation:bob .8s infinite alternate}@keyframes bob{to{transform:translate(-50%,-5px) rotate(7deg)}}.btn{width:100%;padding:15px;border-radius:14px;border:0;background:var(--green);color:#fff;font-weight:750;margin-top:10px}.btn.secondary{background:#edf4ed;color:var(--green)}.btn:disabled{opacity:.45;cursor:not-allowed}.notice{padding:12px 13px;border-radius:13px;background:#fef4e8;color:#885b2b;font-size:13px;line-height:1.45;margin-top:12px}.success{background:#eaf5ed;color:#236b49}.calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.nav{background:#f1f5f0;border:0;border-radius:10px;padding:8px 12px;color:var(--green);font-size:17px}.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.calhead{text-align:center;color:#86958a;font-size:11px;padding:6px 0}.cell{height:43px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12px;position:relative}.cell .symbol{font-size:11px;font-weight:800}.cell.weekend{background:#f2f3f1;color:#9ba69f}.cell.complete{background:#e4f2e7;color:#267049}.cell.gold{background:#f9e6b2;color:#805b13}.cell.missed{color:#ba584e;background:#fff0ec}.cell.today{outline:2px solid #2d7754;outline-offset:-2px}.cell.future{color:#c0c7c0}.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:#718075;margin-top:13px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.setting{margin:12px 0}.setting label{display:block;font-size:12px;font-weight:750;margin-bottom:7px}.setting input,.setting textarea{width:100%;border:1px solid #dbe6dc;border-radius:12px;padding:12px;background:#fcfdfa;color:var(--ink)}.setting textarea{min-height:85px;resize:vertical}.progressline{height:9px;background:#eaf0e9;border-radius:9px;overflow:hidden}.progressline div{height:100%;background:var(--green);border-radius:9px;transition:width .2s}.prompt{background:#f1f6ef;border-radius:15px;padding:15px;font-size:14px}.celebrate{display:none;text-align:center;background:linear-gradient(130deg,#f9eac2,#f0f8ed);border:1px solid #edda9e;border-radius:18px;padding:19px;margin:13px 0}.celebrate.show{display:block;animation:pop .4s ease-out}@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}.center{text-align:center}.footer{font-size:12px;color:#819185;text-align:center;margin:24px 0}.muted{color:var(--muted)}.iconbtn{border:0;background:#e9f2e9;border-radius:50%;padding:9px 11px}.hidden{display:none!important}@media(max-width:360px){.app{padding:22px 12px}.card{padding:15px}.timer{font-size:52px}.cell{height:37px}}
+.backup-nudge{margin-top:16px;padding:17px;border:1px solid #e7d8b5;border-radius:17px;background:#fff8e9;color:#604a2b}.backup-nudge p{margin:9px 0}.backup-nudge .btn{margin-top:9px}.backup-nudge.hidden{display:none}</style></head><body><main class="app"><div class="heading"><div><h1 class="love-heading">Hey Babe, good luck today! ❤️</h1></div><span class="pill" id="streakPill">🔥 0 days</span></div>
+<section class="card"><div class="stats"><div class="stat"><strong id="streak">0</strong><small>Streak days</small></div><div class="stat"><strong id="best">0</strong><small>Best streak</small></div></div><p class="small" id="weekStatus" style="margin-bottom:7px">Weekly goal</p><div class="progressline"><div id="weekBar"></div></div></section>
+<section class="card"><h2>Today's little steps</h2><label class="task"><input id="notes" type="checkbox"><span>📖 Open your Portuguese notes</span></label><label class="task"><input id="studied" type="checkbox" disabled><span>⏱️ Study for at least 5 minutes</span></label><label class="task hidden" id="rescueTask"><input id="rescueCheck" type="checkbox" disabled><span>🛡️ Study for 10 minutes to save your streak</span></label><div id="rescueMessage" class="notice hidden"></div><div id="weekendMessage" class="notice success hidden">🌿 Weekends are optional. Any practice is a bonus!</div></section>
+<section class="card"><div class="eyebrow center">YOUR DAILY PRACTICE</div><div class="timer" id="clock">00:00</div><div class="track"><div class="fill" id="fill"></div><span class="flame" id="flame">🔥</span></div><p class="small center" id="timerMessage">Open your notes to begin.</p><button class="btn" id="start" disabled>Start studying</button><button class="btn secondary" id="reset">Reset today's timer</button><div class="celebrate" id="celebrate"><div style="font-size:35px">🎉🏆</div><h2 id="celebrateTitle">Parabéns!</h2><div id="celebrateText">I’m so proud of you, I love you! ❤️</div></div><div id="backupNudge" class="backup-nudge hidden" role="status"><strong>💾 Time to protect your streak!</strong><p>It’s been 7 days since your last backup. Save a copy so you don’t lose your progress. ❤️</p><button class="btn" id="backupNow" type="button">Back up my progress</button><p class="small">After downloading, save the file to iCloud Drive or another safe place.</p></div></section>
+<section class="card"><div class="calendar-header"><button class="nav" id="prevMonth" aria-label="Previous month">‹</button><h2 id="monthTitle" style="margin:0">November 2026</h2><button class="nav" id="nextMonth" aria-label="Next month">›</button></div><div class="cal" id="calendar"></div><div class="legend"><span>🟨 Active streak</span><span>✓ Practiced</span><span>× Missed</span><span>– Optional</span></div></section>
+<section class="card"><h2>Little wins add up</h2><div class="grid2"><div class="stat"><strong id="weekMinutes">0</strong><small>Minutes this week</small></div><div class="stat"><strong id="monthMinutes">0</strong><small>Minutes this month</small></div></div><p class="small" id="goalText" style="margin-top:13px">Goal: 5 weekdays per week</p><div class="prompt" id="prompt">💡 Review five words you learned yesterday.</div></section>
+<section class="card"><h2>Make your reminder 💌</h2><div class="setting"><label for="studyTime">Preferred weekday study time</label><input id="studyTime" type="time" value="19:00"></div><div class="setting"><label for="weeklyGoal">Weekday goal (1–5 days)</label><input id="weeklyGoal" type="number" min="1" max="5" value="5"></div><div class="setting"><label for="messages">Personal encouragement (one message per line)</label><textarea id="messages" placeholder="Remi and me believe in you. You got this! 🐶❤️"></textarea></div><button class="btn" id="saveSettings">Save preferences</button><button class="btn secondary" id="reminder">📅 Add weekday reminders to iPhone Calendar</button><p class="small">Free, reliable reminders use your iPhone Calendar. Import the downloaded calendar event, then enable Calendar alerts. The web app itself cannot reliably send scheduled background notifications without additional infrastructure.</p></section>
+<section class="card"><h2>Keep your progress safe</h2><p class="small">Your history stays on this device, not on GitHub. Export a backup occasionally, especially before switching phones or clearing Safari data.</p><button class="btn secondary" id="export">⬇ Export backup</button><button class="btn secondary" id="importButton">⬆ Restore backup</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"><p class="small" id="backupStatus" role="status"></p></section></main>
 <script>
-const KEY = "portugueseHabitV1";
-const goal = 300;
-const pad = n => String(n).padStart(2,"0");
-const dateKey = d =>
-  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const dayBefore = (key, days) => {
-  const [y,m,d] = key.split("-").map(Number);
-  const dt = new Date(y,m-1,d-days,12);
-  return dateKey(dt);
-};
-const today = () => dateKey(new Date());
-let data;
-try { data = JSON.parse(localStorage.getItem(KEY)) || {}; }
-catch { data = {}; }
-data.history ||= {};
-data.sessions ||= {};
-let running = false, started = 0, interval = null;
-let elapsed = data.sessions[today()] || 0;
-const $ = id => document.getElementById(id);
-const save = () => localStorage.setItem(KEY, JSON.stringify(data));
-
-function streak() {
-  let cursor = data.history[today()] ? today() : dayBefore(today(),1);
-  let count = 0, grace = 1;
-  // A single missed day is forgiven between completed days.
-  for (let i=0;i<3660;i++) {
-    if(data.history[cursor]) count++;
-    else if(count > 0 && grace > 0) grace--;
-    else break;
-    cursor = dayBefore(cursor,1);
-  }
-  return count;
+'use strict';
+const KEY='portugueseHabitV1', SETTINGS='portugueseHabitSettingsV2',GOAL=300;
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0');
+const key=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fromKey=s=>{let [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)};
+const shift=(s,n)=>{let d=fromKey(s);d.setDate(d.getDate()+n);return key(d)};
+const today=()=>key(new Date()),weekend=s=>[0,6].includes(fromKey(s).getDay());
+const weekdayBefore=s=>{let d=shift(s,-1);while(weekend(d))d=shift(d,-1);return d};
+const weekdayAfter=s=>{let d=shift(s,1);while(weekend(d))d=shift(d,1);return d};
+const read=(k,fallback)=>{try{return JSON.parse(localStorage.getItem(k))||fallback}catch{return fallback}};
+let data=read(KEY,{});data.history ||= {};data.sessions ||= {};
+let settings=read(SETTINGS,{time:'19:00',weeklyGoal:5,messages:"Remi and me believe in you. You got this! 🐶❤️"});
+if(settings.messages==="I'm proud of you for showing up today! ❤️\nEvery little step counts. 💚") {settings.messages='Remi and me believe in you. You got this! 🐶❤️';localStorage.setItem(SETTINGS,JSON.stringify(settings));}
+let elapsed=Number(data.sessions[today()])||0,running=false,started=0,ticker=null,activeDay=today(),monthOffset=0,celebratedToday=false;
+const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+const savePrefs=()=>localStorage.setItem(SETTINGS,JSON.stringify(settings));
+function minutes(s){return Math.max(0,Number(data.sessions[s])||0)}
+function completed(s){return !!data.history[s]||minutes(s)>=GOAL}
+function rescued(s){
+  if(completed(s)||weekend(s))return false;
+  const next=weekdayAfter(s);
+  if(minutes(next)>=600)return true;
+  if(fromKey(s).getDay()===5)return [shift(s,1),shift(s,2)].some(x=>minutes(x)>=GOAL);
+  return false;
 }
-
-function render() {
-  const done = !!data.history[today()];
-  $("notes").checked = !!data.notesDate && data.notesDate === today();
-  $("studied").checked = done;
-  $("streak").textContent = streak() + (streak()===1?" day":" days");
-  const total = elapsed + (running ? Math.floor((Date.now()-started)/1000) : 0);
-  $("clock").textContent = `${pad(Math.floor(total/60))}:${pad(total%60)}`;
-  $("fill").style.width = Math.min(100,total/goal*100)+"%";
-  $("start").disabled = done || !$("notes").checked;
-  $("start").textContent = running ? "Pause practice" : "Start studying";
-  $("message").textContent = done ? "Parabéns! You did it! 🎉" :
-    total >= goal ? "Goal reached!" : "Every minute counts. 💚";
-  $("week").innerHTML = "";
-  for(let i=6;i>=0;i--) {
-    const day = dayBefore(today(),i);
-    const dt = new Date(day+"T12:00:00");
-    const label = dt.toLocaleDateString("en-US",{weekday:"short"}).slice(0,1);
-    const el = document.createElement("div");
-    el.className="day";
-    el.innerHTML=`${label}<div class="dot ${data.history[day]?"done":""}">${data.history[day]?"✓":"·"}</div>`;
-    $("week").appendChild(el);
+function covered(s){return completed(s)||rescued(s)}
+function rescueTarget(s){
+  const dow=fromKey(s).getDay();
+  if(dow===6||dow===0){
+    const friday=shift(s,dow===6?-1:-2);
+    const saturday=shift(friday,1);
+    if(!covered(friday)&&covered(weekdayBefore(friday))&&
+       !(dow===0&&minutes(saturday)>=GOAL))return {missed:friday,seconds:300};
+    return null;
   }
+  const prior=weekdayBefore(s);
+  if(prior>=today()||covered(prior)||!covered(weekdayBefore(prior)))return null;
+  return {missed:prior,seconds:600};
 }
-
-function pause() {
-  if (!running) return;
-  elapsed += Math.floor((Date.now()-started)/1000);
-  running = false;
-  clearInterval(interval);
-  data.sessions[today()] = elapsed;
-  save();
+function rescueNeeded(s){return !!rescueTarget(s)}
+function streakInfo(){let cursor=weekend(today())?weekdayBefore(today()):today();if(!covered(cursor)&&cursor===today())cursor=weekdayBefore(cursor);if(!covered(cursor)&&rescueTarget(today())?.missed===cursor)cursor=weekdayBefore(cursor);let dates=[];for(let i=0;i<2500;i++){if(!covered(cursor))break;dates.push(cursor);cursor=weekdayBefore(cursor)}return {count:dates.length,dates:new Set(dates)}}
+function bestStreak(){const keys=Object.keys(data.sessions).concat(Object.keys(data.history)).sort();if(!keys.length)return 0;let d=keys[0],end=today(),current=0,best=0;for(let i=0;i<4000&&d<=end;i++,d=shift(d,1)){if(weekend(d))continue;if(covered(d)){current++;best=Math.max(best,current)}else current=0}return best}
+function weekStart(s){let d=fromKey(s);d.setDate(d.getDate()-((d.getDay()+6)%7));return key(d)}
+function weeklyCount(){let start=weekStart(today()),n=0;for(let i=0;i<5;i++)if(covered(shift(start,i)))n++;return n}
+function runningTotal(){return elapsed+(running?Math.floor((Date.now()-started)/1000):0)}
+function pause(){if(!running)return;elapsed+=Math.floor((Date.now()-started)/1000);running=false;clearInterval(ticker);ticker=null;data.sessions[activeDay]=elapsed;save()}
+function syncDay(){if(today()!==activeDay){pause();activeDay=today();elapsed=minutes(activeDay);celebratedToday=false}}
+function markProgress(){let t=runningTotal();if(t>=GOAL&&!data.history[activeDay]){data.history[activeDay]=true;if(!data.backupReminderStartedAt)data.backupReminderStartedAt=new Date().toISOString();save();celebratedToday=true}if(rescueTarget(activeDay)&&t>=rescueTarget(activeDay).seconds)celebratedToday=true}
+function backupDue(){
+  if(!completed(today()))return false;
+  const anchor=data.lastBackupAt||data.backupReminderStartedAt;
+  if(!anchor)return false;
+  const when=Date.parse(anchor);
+  return Number.isFinite(when)&&Date.now()-when>=7*24*60*60*1000;
 }
-function tick() {
-  if (today() !== activeDay) {
-    pause(); elapsed = data.sessions[today()] || 0;
-    activeDay = today();
-  }
-  const total = elapsed + (running ? Math.floor((Date.now()-started)/1000) : 0);
-  if (running && total >= goal) {
-    pause();
-    elapsed = Math.max(elapsed,goal);
-    data.history[today()] = true;
-    data.sessions[today()] = elapsed;
-    save();
-  }
-  render();
-}
-let activeDay = today();
-$("notes").addEventListener("change", e => {
-  if(!e.target.checked) pause();
-  data.notesDate = e.target.checked ? today() : null;
-  save(); render();
-});
-$("start").addEventListener("click", () => {
-  if(running) pause();
-  else {
-    started = Date.now();
-    running = true;
-    interval = setInterval(tick,250);
-  }
-  render();
-});
-$("reset").addEventListener("click", () => {
+function renderCalendar(streakDates){const now=fromKey(today());let view=new Date(now.getFullYear(),now.getMonth()+monthOffset,1,12),year=view.getFullYear(),month=view.getMonth(),last=new Date(year,month+1,0).getDate(),offset=(view.getDay()+6)%7; $('monthTitle').textContent=view.toLocaleDateString('en-US',{month:'long',year:'numeric'});let html=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(x=>`<div class="calhead">${x}</div>`).join('');for(let i=0;i<offset;i++)html+='<div></div>';for(let day=1;day<=last;day++){let s=key(new Date(year,month,day,12)),isFuture=s>today(),isWeekend=weekend(s),done=completed(s),isCovered=covered(s),isToday=s===today(),missed=!isFuture&&!isWeekend&&!isCovered;let cls=['cell',isWeekend?'weekend':'',done?'complete':'',streakDates.has(s)?'gold':'',missed?'missed':'',isFuture?'future':'',isToday?'today':''].join(' ');let symbol=done?'✓':isWeekend?'–':missed?'×':'';html+=`<div class="${cls}" title="${s}${isWeekend?' · optional':''}"><span>${day}</span><span class="symbol">${symbol}</span></div>`} $('calendar').innerHTML=html}
+function progressColor(pct){const t=Math.max(0,Math.min(1,pct/100));const a=[46,145,101],b=[217,83,57];return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`}
+const prompts=['Review five words from yesterday.','Say three sentences about your day out loud.','Read a short paragraph and underline new words.','Describe what you ate today in Portuguese.','Practice five common verbs in the present tense.','Listen to one minute of Portuguese and repeat it.','Write three questions you could ask someone in Brazil.','Review your notes and teach one concept aloud.'];
+function render(){syncDay();markProgress();let t=runningTotal(),done=completed(today()),target=rescueTarget(today()),rescue=!!target,info=streakInfo();$('streak').textContent=info.count;$('streakPill').textContent=`🔥 ${info.count} ${info.count===1?'day':'days'}`;$('best').textContent=bestStreak();let all=Object.values(data.sessions).reduce((a,b)=>a+Math.max(0,Number(b)||0),0)+(running?Math.floor((Date.now()-started)/1000):0);let wk=weeklyCount(),goal=Number(settings.weeklyGoal)||5;$('weekStatus').textContent=`This week: ${wk} of ${goal} weekday sessions`;$('weekBar').style.width=Math.min(100,wk/goal*100)+'%';$('notes').checked=data.notesDate===today();$('studied').checked=done;$('rescueTask').classList.toggle('hidden',!rescue);$('rescueCheck').checked=rescue&&t>=target.seconds;$('rescueTask').querySelector('span').textContent=rescue?`🛡️ Study for ${target.seconds/60} minutes to save your streak`:'';$('weekendMessage').classList.toggle('hidden',!weekend(today())||rescue);$('rescueMessage').classList.toggle('hidden',!rescue);if(rescue)$('rescueMessage').textContent=t>=target.seconds?'🛡️ Streak rescued! You made up for the missed day.':`🛡️ Save your streak! You missed ${fromKey(target.missed).toLocaleDateString('en-US',{weekday:'long'})}. Study ${target.seconds/60} minutes today to rescue it. ${Math.max(0,Math.ceil((target.seconds-t)/60))} minute(s) to go.`;
+$('clock').textContent=`${pad(Math.floor(t/60))}:${pad(t%60)}`;$('clock').classList.toggle('fire',t>=GOAL);let pct=Math.min(100,t/GOAL*100);$('fill').style.width=pct+'%';$('fill').style.background=progressColor(pct);$('flame').classList.toggle('show',t>GOAL);$('flame').style.left=Math.min(97,Math.max(3,pct))+'%';$('timerMessage').textContent=t>=GOAL?(rescue&&t<target.seconds?'Five minutes done! Keep going to 10 to rescue your streak.':'Parabéns! Keep going — every extra minute counts 🔥'):'Just five minutes. You can do this!';$('start').disabled=!$('notes').checked;$('start').textContent=running?'Pause practice':t>0?'Continue studying':'Start studying';$('reset').disabled=running;
+let start=weekStart(today()),weekSecs=0,monthSecs=0;for(const [s,v] of Object.entries(data.sessions)){if(s>=start&&s<=shift(start,6))weekSecs+=Number(v)||0;if(s.slice(0,7)===today().slice(0,7))monthSecs+=Number(v)||0}if(running){weekSecs+=Math.floor((Date.now()-started)/1000);monthSecs+=Math.floor((Date.now()-started)/1000)}$('weekMinutes').textContent=Math.floor(weekSecs/60);$('monthMinutes').textContent=Math.floor(monthSecs/60);$('goalText').textContent=`Your weekly goal: ${goal} weekdays. Weekends are optional.`;let dayNumber=Math.floor(fromKey(today()).getTime()/86400000);$('prompt').textContent='💡 '+prompts[Math.abs(dayNumber)%prompts.length];let lines=(settings.messages||'').split('\n').map(x=>x.trim()).filter(Boolean);renderCalendar(info.dates);
+let milestone=[3,7,14,30,60,100,200,365].includes(info.count)&&done&&info.dates.has(today());let show=celebratedToday||milestone&&data.lastCelebrated!==today();$('celebrate').classList.toggle('show',show);$('backupNudge').classList.toggle('hidden',!backupDue());if(show){$('celebrateTitle').textContent=milestone?`${info.count}-day streak! 🏆`:'Parabéns! 🎉';$('celebrateText').textContent="I'm so proud of you, I love you! ❤️";data.lastCelebrated=today();save()}}
+$('notes').addEventListener('change',e=>{if(!e.target.checked)pause();data.notesDate=e.target.checked?today():null;save();render()});$('start').addEventListener('click',()=>{syncDay();if(running)pause();else{running=true;started=Date.now();ticker=setInterval(()=>{markProgress();render()},500)}render()});$('reset').addEventListener('click',()=>{pause();if(!confirm('Reset today’s recorded minutes? Completed history will remain.'))return;elapsed=0;data.sessions[today()]=0;delete data.history[today()];save();render()});document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();render()}});window.addEventListener('pagehide',pause);
+$('prevMonth').onclick=()=>{monthOffset--;render()};$('nextMonth').onclick=()=>{monthOffset++;render()};$('studyTime').value=settings.time||'19:00';$('weeklyGoal').value=settings.weeklyGoal||5;$('messages').value=settings.messages||'';
+$('saveSettings').onclick=()=>{settings.time=$('studyTime').value||'19:00';settings.weeklyGoal=Math.max(1,Math.min(5,Number($('weeklyGoal').value)||5));settings.messages=$('messages').value;savePrefs();render();alert('Preferences saved on this device.')};
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
+function exportBackup(){
   pause();
-  if(data.history[today()]) return;
-  elapsed = 0;
-  data.sessions[today()] = 0;
-  save(); render();
-});
-document.addEventListener("visibilitychange", () => {
-  if(document.hidden) pause();
-});
+  const timestamp=new Date().toISOString();
+  const backupData={...data,lastBackupAt:timestamp};
+  download(`portuguese-habit-backup-${today()}.json`,JSON.stringify({version:2,exportedAt:timestamp,data:backupData,settings},null,2),'application/json');
+  data.lastBackupAt=timestamp;save();
+  $('backupStatus').textContent='Backup downloaded. Save it to iCloud Drive or another safe place.';
+  render();
+}
+$('export').onclick=exportBackup;
+$('backupNow').onclick=()=>{exportBackup();$('backupStatus').scrollIntoView({behavior:'smooth',block:'center'})};$('importButton').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!obj||!obj.data||typeof obj.data!=='object'||!obj.data.sessions||!obj.data.history)throw Error('Invalid backup format');if(!confirm('Restore this backup? It will replace study history on this device.'))return;pause();data=obj.data;settings=obj.settings||settings;save();savePrefs();elapsed=minutes(today());$('studyTime').value=settings.time||'19:00';$('weeklyGoal').value=settings.weeklyGoal||5;$('messages').value=settings.messages||'';render();$('backupStatus').textContent='Backup restored successfully.'}catch(err){$('backupStatus').textContent='Could not restore: '+err.message}finally{e.target.value=''}};
+$('reminder').onclick=()=>{let [hh,mm]=(settings.time||'19:00').split(':').map(Number),now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);if(start<=now)start.setDate(start.getDate()+1);let fmt=d=>`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;let end=new Date(start.getTime()+15*60000);let ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Meu Portugues//Study Reminders//EN','BEGIN:VEVENT',`UID:portuguese-study-${Date.now()}@meuportugues`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,`DTSTART:${fmt(start)}`,`DTEND:${fmt(end)}`,'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR','SUMMARY:Portuguese practice — just 5 minutes','DESCRIPTION:Open your notes and practice for five minutes. You can do this!','BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Time for five minutes of Portuguese!','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');download('portuguese-weekday-reminders.ics',ics,'text/calendar');alert('Calendar reminder downloaded. Open/import the .ics file on your iPhone and confirm its repeating weekday event and alert. Save preferences first if you changed the time.')};
 render();
-</script>
-</body>
-</html>
+</script></body></html>
